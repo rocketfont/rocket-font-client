@@ -4,7 +4,7 @@ import PreviewTextDemo from "../../components/FontViewerPreviewText";
 import {getFonts, TFont} from "../../components/getFonts";
 import {FontViewer} from "../../components/FontViewer";
 import FontTester from "../../components/FontTester";
-import RocketFontLayout from "../../components/RocketFontLayout.";
+import RocketFontLayout from "../../components/RocketFontLayout";
 import {Form, Input} from 'antd';
 
 function App() {

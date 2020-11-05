@@ -1,4 +1,4 @@
-import RocketFontLayout from "../RocketFontLayout.";
+import RocketFontLayout from "../RocketFontLayout";
 import {Button, Checkbox, Form, Input} from 'antd';
 import backOfficeAxios from "../ajax/backofficeBackend";
 

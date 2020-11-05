@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import {siteTitle} from "../components/layout";
 import React from "react";
+import {useRouter} from "next/router";
 //
 //
 // const Home = function () {
@@ -17,5 +18,7 @@ import React from "react";
 //     );
 // }
 //
-// export default Home;
-//
+export default function WebRoot() {
+    return (<></>);
+}
+

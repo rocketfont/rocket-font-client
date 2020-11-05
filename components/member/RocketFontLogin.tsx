@@ -1,4 +1,4 @@
-import RocketFontLayout from "../RocketFontLayout.";
+import RocketFontLayout from "../RocketFontLayout";
 import {Button, Form, Input} from 'antd';
 
 const RocketFontLogin = function () {

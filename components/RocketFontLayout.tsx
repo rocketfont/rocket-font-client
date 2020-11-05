@@ -4,45 +4,56 @@ import Link from "next/link";
 
 const {Sider, Content, Header, Footer} = Layout;
 const {SubMenu} = Menu;
+import { useRouter } from 'next/router'
 
 
-interface LayoutContent {
+
+type LayoutContent = {
     children: JSX.Element
 }
 
 const RocketFontLayout = function ({children}: LayoutContent) {
+    const router = useRouter();
+
+    const urlPath = router.pathname;
 
     return (
         <Layout style={{minHeight: '100vh'}}>
             <Sider collapsible>
                 <div className="logo">
-                    <h1 style={{color:'white', margin : '16px',}}>Rocket Font</h1>
+                    <Link href="/fonts">
+                        <h1 style={{color:'white', margin : '16px',}}>
+                            <a>Rocket Font</a>
+                            </h1>
+                    </Link>
                 </div>
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                    <Menu.Item key="1">
+                <Menu theme="dark" defaultSelectedKeys={[urlPath]} mode="inline" defaultOpenKeys={['/member']}>
+                    <Menu.Item key="/fonts">
                         <Link href="/fonts">
                             폰트 보기
                         </Link>
                     </Menu.Item>
-                    <SubMenu key="sub1" title="마이페이지">
-                        <Menu.Item key="3">
+                    <SubMenu key="/member" title="마이페이지">
+                        <Menu.Item key="/member/login">
                             <Link href="/member/login">
                                 로그인
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="4">
+                        <Menu.Item key="/member/signUp">
                             <Link href="/member/signUp">
                                 회원가입
                             </Link>
                         </Menu.Item>
+                        <Menu.Item key="/member/siteManagement">
+                            <Link href="/member/siteManagement">
+                                폰트 사이트 관리하기
+                            </Link>
+                        </Menu.Item>
                     </SubMenu>
-                    <SubMenu key="sub2" title="Team">
-                        <Menu.Item key="6">Team 1</Menu.Item>
-                        <Menu.Item key="8">Team 2</Menu.Item>
+                    <SubMenu key="sub2" title="결제/정산">
+                        <Menu.Item key="6">사용료 결제하기</Menu.Item>
+                        <Menu.Item key="8">정산금액 확인하기</Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="9">
-                        Files
-                    </Menu.Item>
                 </Menu>
             </Sider>
             <Layout className="site-layout">
