@@ -44,6 +44,11 @@ const RocketFontLayout = function ({children}: LayoutContent) {
                                 회원가입
                             </Link>
                         </Menu.Item>
+                        <Menu.Item key="/member/logout">
+                            <Link href="/member/logout">
+                                로그아웃
+                            </Link>
+                        </Menu.Item>
                         <Menu.Item key="/member/siteManagement">
                             <Link href="/member/siteManagement">
                                 폰트 사이트 관리하기
@@ -51,6 +56,11 @@ const RocketFontLayout = function ({children}: LayoutContent) {
                         </Menu.Item>
                     </SubMenu>
                     <SubMenu key="sub2" title="결제/정산">
+                        <Menu.Item key="/billing/card">
+                            <Link href="/billing/card">
+                                신용카드 등록하기
+                            </Link>
+                        </Menu.Item>
                         <Menu.Item key="6">사용료 결제하기</Menu.Item>
                         <Menu.Item key="8">정산금액 확인하기</Menu.Item>
                     </SubMenu>
@@ -61,14 +71,14 @@ const RocketFontLayout = function ({children}: LayoutContent) {
                 </Header>
                 <Content style={{margin: '0 16px'}}>
                     {/*<Breadcrumb style={{margin: '16px 0'}}>*/}
-                        {/*<Breadcrumb.Item>User</Breadcrumb.Item>*/}
-                        {/*<Breadcrumb.Item>Bill</Breadcrumb.Item>*/}
+                    {/*    <Breadcrumb.Item>User</Breadcrumb.Item>*/}
+                    {/*    <Breadcrumb.Item>Bill</Breadcrumb.Item>*/}
                     {/*</Breadcrumb>*/}
                     <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
                         {children}
                     </div>
                 </Content>
-                <Footer style={{textAlign: 'center'}}>Ant Design ©2018 Created by Ant UED</Footer>
+                <Footer style={{textAlign: 'center'}}/>
             </Layout>
         </Layout>
     );

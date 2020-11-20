@@ -1,7 +1,45 @@
 import RocketFontLayout from "../RocketFontLayout";
-import {Button, Form, Input} from 'antd';
+import {Button, Checkbox, Col, Form, Input, notification, Row} from 'antd';
+import {PlayBackOfficeAxios} from "../ajax/backofficeBackend";
+import {useRouter} from "next/router";
+import JsonResponse from "../ajax/JsonResponse";
+import Link from "next/link";
 
+
+interface LoginFormParam  {
+    email: string,
+    password: string,
+}
+
+interface LoginResponse {
+    memberSrl : number
+}
 const RocketFontLogin = function () {
+    const router = useRouter();
+    const onLoginFormFinish = async function ({email, password} : LoginFormParam){
+        const ajax = await PlayBackOfficeAxios.post<JsonResponse<LoginResponse>>('/api/v1/member/login',
+            {
+                email,
+                password
+            }
+        )
+        if(ajax.status === 200){
+            sessionStorage.setItem('memberSrl',ajax.data.data.memberSrl.toString());
+            notification.open({
+                message: '로그인 성공',
+                description:
+                    '로그인을 성공하였습니다.',
+            });
+            router.push('/fonts')
+        }
+        else{
+            notification.open({
+                message: '로그인 실패',
+                description:
+                    `로그인 실패하였습니다. ${ajax.data.message}`,
+            });
+        }
+    }
 
     const layout = {
         labelCol: {span: 4},
@@ -16,7 +54,9 @@ const RocketFontLogin = function () {
     }
 
     return (
-            <Form name="login" {...layout} style={{width:'100%'}} >
+            <Form name="login" {...layout} style={{width:'100%'}}
+                  onFinish={onLoginFormFinish}
+            >
                 <Form.Item label="e-mail"
                            name="email"
                            rules={[{required: true, message: '이메일을 입력해주세요.'}]}
@@ -28,6 +68,9 @@ const RocketFontLogin = function () {
                            rules={[{required: true, message: '비밀번호를 입력해주세요'}]}
                 >
                     <Input.Password/>
+                </Form.Item>
+                <Form.Item label="Help">
+                        <Link href="/member/findPassword">비밀번호를 분실하셨나요?</Link>
                 </Form.Item>
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit" style={{width:'100%'}}>

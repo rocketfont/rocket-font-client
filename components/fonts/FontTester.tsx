@@ -5,7 +5,6 @@ import {EditOutlined} from "@ant-design/icons";
 
 
 interface FontTestWriterArgs {
-    fontName: string
     previewText : string
     setPreviewText : (text: string) => void,
 }
@@ -23,7 +22,6 @@ const FontTester = (props: FontTestWriterArgs) => {
 
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         props.setPreviewText(e.target.value)
-        console.log(e.target.value)
     };
 
     return (
