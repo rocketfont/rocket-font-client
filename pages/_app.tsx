@@ -1,6 +1,7 @@
 import 'antd/dist/antd.css';
 import getMemberSrlFromServer from "../components/member/getMemberSrlFromServer";
 import {useRouter} from "next/router";
+import Head from "next/head";
 // @ts-ignore
 
 function MyApp({ Component, pageProps }) {
@@ -18,6 +19,8 @@ function MyApp({ Component, pageProps }) {
     //         })
     // }
 
-    return (<Component {...pageProps} />);
+    return (<Component {...pageProps} >
+
+    </Component>);
 }
 export default MyApp

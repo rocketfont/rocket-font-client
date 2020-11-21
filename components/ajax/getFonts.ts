@@ -11,6 +11,8 @@ interface Font {
     fontFamilyName : string,
     fontWeight : number,
     fontStyle : string,
+    fontPricePerMinute : number,
+    fontPricePerRequest : number,
 }
 
 const fontWeightMap = new Map<number, string>();

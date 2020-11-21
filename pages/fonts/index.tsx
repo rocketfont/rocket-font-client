@@ -80,12 +80,12 @@ function App() {
 
     useEffect(() => {
         const fontFamily = filter.get('fontFamily') ?? '';
-        const fontWeight = Number.parseInt(filter.get('fontWeight') ?? '-1')
+        const fontWeight = Number.parseInt(filter.get('fontWeight') ?? '0')
         let filteredFonts = allFonts;
         if (fontFamily !== '') {
             filteredFonts = filteredFonts.filter(t => t.fontFamilyName.toLowerCase().includes(fontFamily.toLowerCase()))
         }
-        if (fontWeight !== -1) {
+        if (fontWeight !== 0) {
             filteredFonts = filteredFonts.filter(t => t.fontWeight === fontWeight);
         }
         setFonts(filteredFonts);
@@ -112,7 +112,7 @@ function App() {
                 <Col span="12">
                     <Form.Item name="fontWeight" label="두께 필터">
                         <Select>
-                            <Select.Option value="-1">전체</Select.Option>
+                            <Select.Option value="0">전체</Select.Option>
                             {Array.from(fontWeightMap.keys()).map(key => {
                                 const name = `${key} - ${fontWeightMap.get(key)}`
                                 const value = `${key}`
