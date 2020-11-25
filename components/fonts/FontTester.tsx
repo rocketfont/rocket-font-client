@@ -20,8 +20,16 @@ const FontTester = (props: FontTestWriterArgs) => {
     };
 
 
+    let throttleTimer : number | null = null  ;
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
-        props.setPreviewText(e.target.value)
+        const value =e.target.value;
+        if(throttleTimer === null){
+            throttleTimer = window.setTimeout(() => {
+                throttleTimer = null;
+                props.setPreviewText(value)
+                // console.log('throttle' ,value)
+            }, 200)
+        }
     };
 
     return (

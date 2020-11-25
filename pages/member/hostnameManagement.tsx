@@ -57,6 +57,7 @@ const hostnameManagement = function () {
     ]
 
     const router = useRouter();
+    const [hostInsertForm] = Form.useForm();
     const [tableData, setTableData] = useState([] as HostnameRow[]);
     const [rerenderBate, setRerenderBate] = useState({});
     useEffect(() => {
@@ -89,10 +90,11 @@ const hostnameManagement = function () {
         });
         if(ajax.status === 200){
             notification.open({
-                description:'삭제성공',
-                message : '해당 호스트네임 삭제에 성공했습니다.'
+                message:'삭제성공',
+                description : '해당 호스트네임 삭제에 성공했습니다.'
             })
             setRerenderBate({});
+            hostInsertForm.resetFields();
         }
     }
 
@@ -112,7 +114,7 @@ const hostnameManagement = function () {
                     )}
                 />
             </Table>
-            <Form onFinish={onFinishEvent}>
+            <Form onFinish={onFinishEvent} form={hostInsertForm}>
                 <Form.Item
                     name="hosts"
                     label="추가할 hosts"

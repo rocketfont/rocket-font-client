@@ -15,16 +15,13 @@ interface FontViewerArgs {
 const FontViewer = (props: FontViewerArgs) => {
 
     const fontUsageFee = [];
-        if(props.fontInfo.fontPricePerMinute !== 0) {
-            fontUsageFee.push(`${props.fontInfo.fontPricePerMinute / 1e6}원/분`)
-        }
-        if(props.fontInfo.fontPricePerRequest !== 0){
-            fontUsageFee.push(`${props.fontInfo.fontPricePerRequest / 1e6}원/요청`)
-        }
+    fontUsageFee.push(`${props.fontInfo.fontPricePerMinute / 1e6}원/분`);
+    fontUsageFee.push('+');
+    fontUsageFee.push(`${props.fontInfo.fontPricePerRequest / 1e6}원/요청`);
 
     const input =
         <>
-           {fontUsageFee.join(' ')}<span> </span>
+           {fontUsageFee.join('')}<span> </span>
             <input type="checkbox"
                    value={props.fontInfo.fontSrl}
                    onChange={(e) => props.checkboxChange(e, props.fontInfo)}
