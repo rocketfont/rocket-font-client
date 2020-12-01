@@ -5,8 +5,8 @@ import {EditOutlined} from "@ant-design/icons";
 
 
 interface FontTestWriterArgs {
-    previewText : string
-    setPreviewText : (text: string) => void,
+    previewText: string
+    setPreviewText: (text: string) => void,
 }
 
 const FontTester = (props: FontTestWriterArgs) => {
@@ -20,10 +20,10 @@ const FontTester = (props: FontTestWriterArgs) => {
     };
 
 
-    let throttleTimer : number | null = null  ;
-    const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
-        const value =e.target.value;
-        if(throttleTimer === null){
+    let throttleTimer: number | null = null;
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
+        if (throttleTimer === null) {
             throttleTimer = window.setTimeout(() => {
                 throttleTimer = null;
                 props.setPreviewText(value)

@@ -5,26 +5,41 @@ import {PlayBackOfficeAxios} from "../../components/ajax/backofficeBackend";
 import JsonResponse from "../../components/ajax/JsonResponse";
 import {MouseEventHandler, useEffect, useState} from "react";
 import {useRouter} from "next/router";
-const Column  = Table.Column;
+import * as React from "react";
 
-interface HostnameResponse{
-    registeredHostSrl : number,
-    hostname : string,
-    created : string,
+const Column = Table.Column;
+
+interface HostnameResponse {
+    registeredHostSrl: number,
+    hostname: string,
+    created: string,
 }
-interface HostnameRow extends HostnameResponse{
-    key :number
+
+interface HostnameTableRow extends HostnameResponse {
+    key: number,
 }
+
+interface HostnameResponsePending {
+    pendingHostnameSrl: number,
+    hostname: string,
+    dnsTXTRecord: string,
+    expires: string,
+}
+
+interface HostnameResponsePendingTableRow extends HostnameResponsePending {
+    key: number,
+}
+
 const hostnameManagement = function () {
     const onFinishEvent = async (values: any) => {
         const hosts = values.hosts
-        const ajax = await PlayBackOfficeAxios.post('/api/v1/member/hostname', {
+        const ajax = await PlayBackOfficeAxios.post('/api/v1/member/pendingHostname', {
             hostsText: hosts
         });
-        if(ajax.status === 201){
+        if (ajax.status === 201) {
             notification.open({
-                description :'hostname을 성공적으로 등록했습니다.',
-                message : 'hostname 등록 성공'
+                description: 'hostname을 성공적으로 등록했습니다.',
+                message: 'hostname 등록 성공'
             })
             setRerenderBate({});
         }
@@ -58,56 +73,124 @@ const hostnameManagement = function () {
 
     const router = useRouter();
     const [hostInsertForm] = Form.useForm();
-    const [tableData, setTableData] = useState([] as HostnameRow[]);
+    const [hostnameTableData, setHostnameTableData] = useState([] as HostnameTableRow[]);
+    const [pendingHostnameTableData, setPendingHostnameTableData] = useState([] as HostnameResponsePendingTableRow[]);
     const [rerenderBate, setRerenderBate] = useState({});
+
+
     useEffect(() => {
-        (async () =>{
-            const ajax = await PlayBackOfficeAxios.get<JsonResponse<HostnameResponse[]>>('/api/v1/member/hostname')
-            if(ajax.status === 403){
+        (async () => {
+            const pendingHostNameAjaxPromise = PlayBackOfficeAxios.get<JsonResponse<HostnameResponsePending[]>>('/api/v1/member/pendingHostname')
+            const hostsAjaxPromise = PlayBackOfficeAxios.get<JsonResponse<HostnameResponse[]>>('/api/v1/member/hostname')
+            const pendingHostnameAjax = await pendingHostNameAjaxPromise
+            const hostsAjax = await hostsAjaxPromise
+
+            if (hostsAjax.status === 403) {
                 router.push('/member/login')
-            }
-            else if(ajax.status === 200){
-                const tableData = ajax.data.data.map(t => {
-                    const newObj : HostnameRow = {...t,
-                        key : t.registeredHostSrl
+            } else if (hostsAjax.status === 200) {
+                const tableData: HostnameTableRow[] = hostsAjax.data.data.map(row => {
+                    const newObj: HostnameTableRow = {
+                        ...row,
+                        key: row.registeredHostSrl
                     }
-                    newObj.created = newObj.created.replaceAll('T', '')
+                    newObj.created = newObj.created.replaceAll('T', ' ')
                     return newObj
                 })
-                setTableData(tableData);
+                setHostnameTableData(tableData);
+            }
+
+
+            if (pendingHostnameAjax.status === 200) {
+                const hostnameResponsePendingTableRow: HostnameResponsePendingTableRow[] = pendingHostnameAjax.data.data.map(row => {
+                    const newObj: HostnameResponsePendingTableRow = {
+                        ...row,
+                        key: row.pendingHostnameSrl,
+                    };
+                    newObj.expires = newObj.expires.replaceAll('T', ' ')
+                    return newObj
+                })
+                setPendingHostnameTableData(hostnameResponsePendingTableRow);
             }
         })();
-    },[rerenderBate])
+    }, [rerenderBate])
 
 
-    const clickToDeleteHostname = async (e : React.MouseEvent<HTMLAnchorElement>, registeredHostSrl : number ) => {
+    const clickToDeleteHostname = async (e: React.MouseEvent<HTMLAnchorElement>, registeredHostSrl: number) => {
         const ajax = await PlayBackOfficeAxios.request({
             url: '/api/v1/member/hostname',
             method: 'delete',
-            data : {
+            data: {
                 registeredHostSrl
             }
         });
-        if(ajax.status === 200){
+        if (ajax.status === 200) {
             notification.open({
-                message:'삭제성공',
-                description : '해당 호스트네임 삭제에 성공했습니다.'
+                message: '삭제성공',
+                description: '해당 호스트네임 삭제에 성공했습니다.'
             })
             setRerenderBate({});
             hostInsertForm.resetFields();
         }
     }
 
+    const verifyPendingHostname = async (e: React.MouseEvent<HTMLAnchorElement>, pendingHostnameSrl: number) => {
+        const ajax = await PlayBackOfficeAxios.put<JsonResponse<any>>(`/api/v1/member/hostname/${pendingHostnameSrl}`)
+            if(ajax.status === 201){
+                notification.open({
+                    message: '인증성공',
+                    description: '호스트네임 인증에 성공하였습니다.'
+                })
+            }
+            else{
+                notification.open({
+                    message: '인증실패',
+                    description: `호스트네임 인증에 실패하였습니다. 상세 사유 : ${ajax.data.message}`
+                })
+            }
+        setRerenderBate({});
+
+    }
+    const deletePendingHostname = async (e: React.MouseEvent<HTMLAnchorElement>, pendingHostnameSrl: number) => {
+        const ajax = await PlayBackOfficeAxios.delete(`/api/v1/member/pendingHostname/${pendingHostnameSrl}`)
+        if(ajax.status === 200){
+            notification.open({
+                message: '삭제 성공',
+                description: '호스트네임 삭제에 성공하였습니다.'
+            })
+        }
+        setRerenderBate({});
+    }
+
+
+    const displayCSS: React.CSSProperties = {}
+    if (pendingHostnameTableData.length === 0) {
+        displayCSS.display = 'none';
+    }
 
     return (<RocketFontLayout>
         <>
-            <Table dataSource={tableData}>
+            <Table dataSource={pendingHostnameTableData} style={displayCSS}>
+                <Column title="hostname" dataIndex="hostname"/>
+                <Column title="DNS TXT record" dataIndex="dnsTXTRecord"/>
+                <Column title="인증 만료일" dataIndex="expires"/>
+                <Column
+                    title="액션"
+                    key="액션"
+                    render={(text, record: any) => (
+                        <Space size="middle">
+                            <a onClick={(e) => verifyPendingHostname(e, record.pendingHostnameSrl)}>Verify</a>
+                            <a onClick={(e) => deletePendingHostname(e, record.pendingHostnameSrl)}>Delete</a>
+                        </Space>
+                    )}
+                />
+            </Table>
+            <Table dataSource={hostnameTableData}>
                 <Column title="hostname" dataIndex="hostname"/>
                 <Column title="등록일" dataIndex="created"/>
                 <Column
                     title="삭제"
                     key="delete"
-                    render={(text, record : any) => (
+                    render={(text, record: any) => (
                         <Space size="middle">
                             <a onClick={(e) => clickToDeleteHostname(e, record.registeredHostSrl)}>Delete</a>
                         </Space>

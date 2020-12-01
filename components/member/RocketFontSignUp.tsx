@@ -39,7 +39,7 @@ const RocketFontSignUp = function () {
             notification.open({
                 message: '회원가입 성공',
                 description:
-                    '회원가입에 성공하였습니다.',
+                    '회원가입에 성공하였습니다. 이메일 인증을 해주세요.',
             });
             router.push('/member/login')
         } else {

@@ -16,6 +16,18 @@ interface LoginResponse {
 }
 const RocketFontLogin = function () {
     const router = useRouter();
+
+    // const [memberSrl, setMemberSrl] = useSessionStorageStateNotNull('memberSrl', '');
+    // if(!Number.isInteger(Number.isInteger(sessionStorage.getItem('memberSrl')))){
+    //     notification.open({
+    //         message: '이미 로그인',
+    //         description:
+    //             '이미 로그인 되어 있습니다.',
+    //     });
+    // }
+    //
+
+
     const onLoginFormFinish = async function ({email, password} : LoginFormParam){
         const ajax = await PlayBackOfficeAxios.post<JsonResponse<LoginResponse>>('/api/v1/member/login',
             {

@@ -1,5 +1,5 @@
 import {Breadcrumb, Layout, Menu} from "antd";
-import React from "react";
+import React, {useState} from "react";
 import Link from "next/link";
 
 const {Sider, Content, Header, Footer} = Layout;
@@ -16,6 +16,7 @@ const RocketFontLayout = function ({children}: LayoutContent) {
     const router = useRouter();
 
     const urlPath = router.pathname;
+    const [memberSrl, setMemberSrl] = useState(-1);
 
     return (
         <>
@@ -55,7 +56,7 @@ const RocketFontLayout = function ({children}: LayoutContent) {
                             </Menu.Item>
                             <Menu.Item key="/member/hostnameManagement">
                                 <Link href="/member/hostnameManagement">
-                                    폰트 사이트 관리하기
+                                    호스트 네임 관리하기
                                 </Link>
                             </Menu.Item>
                         </SubMenu>
