@@ -67,7 +67,11 @@ const RocketFontLayout = function ({children}: LayoutContent) {
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="6">사용료 결제하기</Menu.Item>
-                            <Menu.Item key="8">정산금액 확인하기</Menu.Item>
+                            <Menu.Item key="/billing/monthlyBill">
+                                <Link href="/billing/monthlyBill">
+                                    매월 사용료 확인하기
+                                </Link>
+                            </Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>

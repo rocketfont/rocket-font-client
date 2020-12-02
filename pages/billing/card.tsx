@@ -127,7 +127,7 @@ const Card = () => {
                         </Col>
                     </Row>
                     <Button type="primary" htmlType="submit">신용카드 등록/업데이트 하기</Button>
-                    <p>카드 정보는 서버에 저장 되지 않으며, PG사를 통화 토큰화 되어 저장되어 관리자도 알 수 없습니다.</p>
+                    <p>입력하신 카드 정보 서버에 저장 되지 않으며, PG사를 통화 토큰화 되어 저장되어 로켓폰트에서도 알 수 없습니다..</p>
                 </Form>
             </div>
         </RocketFontLayout>)

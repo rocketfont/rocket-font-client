@@ -42,7 +42,7 @@ const RocketFontLogin = function () {
                 description:
                     '로그인을 성공하였습니다.',
             });
-            router.push('/fonts')
+            router.push('/billing/monthlyBill')
         }
         else{
             notification.open({
